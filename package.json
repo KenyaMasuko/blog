@@ -10,8 +10,18 @@
   "private": true,
   "dependencies": {
     "@hono/vite-ssg": "^0.1.0",
+    "@mdx-js/rollup": "^3.0.1",
     "hono": "^4.6.3",
-    "honox": "^0.1.25"
+    "honox": "^0.1.25",
+    "rehype-highlight": "^7.0.0",
+    "rehype-pretty-code": "^0.14.0",
+    "rehype-stringify": "^10.0.1",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.0",
+    "remark-mdx-frontmatter": "^5.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.1",
+    "shiki": "^1.21.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240529.0",

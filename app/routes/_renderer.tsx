@@ -1,6 +1,8 @@
 import { Style } from 'hono/css'
 import { jsxRenderer } from 'hono/jsx-renderer'
 import { Script } from 'honox/server'
+import {Layout} from '../components/layout'
+import styles from '../tailwind.css?url'
 
 export default jsxRenderer(({ children, title }) => {
   return (
@@ -12,8 +14,14 @@ export default jsxRenderer(({ children, title }) => {
         <link rel="icon" href="/favicon.ico" />
         <Script src="/app/client.ts" async />
         <Style />
+        {import.meta.env.PROD ? (
+          <link href="/styles/style.css" rel="stylesheet" />
+        ) : (
+          <link href={styles} rel="stylesheet" />
+        )}
       </head>
-      <body>{children}</body>
+      <body>
+        <Layout>{children}</Layout></body>
     </html>
   )
 })

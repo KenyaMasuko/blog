@@ -12,32 +12,53 @@ import rehypeStringify from "rehype-stringify";
 import rehypePrettyCode from "rehype-pretty-code";
 
 export default defineConfig(({ mode }) => {
-  if (mode === "client") {
-    return {
-      plugins: [client()],
-    };
-  }
+	if (mode === "client") {
+		return {
+			plugins: [client()],
+		};
+	}
 
-  const entry = "./app/server.ts";
+	const entry = "./app/server.ts";
 
-  return {
-    plugins: [
-      ssg({ entry }),
-      honox(),
-      mdx({
-        jsxImportSource: "hono/jsx",
-        remarkPlugins: [
-          remarkFrontmatter,
-          remarkMdxFrontmatter,
-          [remarkRehype],
-          remarkGfm,
-          remarkParse,
-        ],
-        rehypePlugins: [
-          rehypeStringify,
-          [rehypePrettyCode, { theme: "catppuccin-mocha" }],
-        ],
-      }),
-    ],
-  };
+	return {
+		plugins: [
+			ssg({ entry }),
+			honox(),
+			mdx({
+				jsxImportSource: "hono/jsx",
+				remarkPlugins: [
+					remarkFrontmatter,
+					remarkMdxFrontmatter,
+					[remarkRehype],
+					remarkGfm,
+					remarkParse,
+				],
+				rehypePlugins: [
+					rehypeStringify,
+					[rehypePrettyCode, { theme: "catppuccin-mocha" }],
+				],
+			}),
+		],
+		build: {
+			assetsDir: "static",
+			emptyOutDir: false,
+			ssrEmitAssets: false,
+			rollupOptions: {
+				input: ["./app/tailwind.css"],
+				output: {
+					entryFileNames: "[name].js",
+					assetFileNames: (assetInfo) => {
+						if (assetInfo.name === "tailwind.css") {
+							return "styles/style.css";
+						}
+						return assetInfo.name ?? "";
+					},
+				},
+			},
+		},
+		ssr: {
+			target: "node",
+			external: ["@mdx-js/mdx"],
+		},
+	};
 });

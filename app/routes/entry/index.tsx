@@ -1,16 +1,17 @@
 import { createRoute } from "honox/factory";
 import { getPosts } from "../../lib/posts";
+import { Fragment } from "hono/jsx/jsx-runtime";
+import { BlogPost } from "../../components/blog";
 
 export default createRoute(async (c) => {
   const posts = getPosts();
   return c.render(
     <div>
       {posts.map((p, i) => (
-        <a key={p.entryName} href={`/entry/${p.entryName}`}>
-          <h2>{p.frontmatter.title}</h2>
-          <p>{p.frontmatter.date}</p>
-        </a>
+        <Fragment key={p.entryName}>
+          <BlogPost entryName={p.entryName} frontmatter={p.frontmatter} />
+        </Fragment>
       ))}
-    </div>,
+    </div>
   );
 });

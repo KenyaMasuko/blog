@@ -25,7 +25,7 @@ export const Layout: FC<Props> = ({ children }) => {
             href="/"
             className="text-2xl font-bold text-gray-800 dark:text-white"
           >
-            テックブログ
+            kenchandayo
           </a>
           <nav className="hidden md:flex space-x-4">
             <a
@@ -119,7 +119,7 @@ export const Layout: FC<Props> = ({ children }) => {
       </main>
       <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
         <div className="container mx-auto px-4 py-6 text-center text-gray-600 dark:text-gray-400">
-          © 2024 テックブログ. All rights reserved.
+          © 2024 KenyaMasuko All rights reserved.
         </div>
       </footer>
     </div>

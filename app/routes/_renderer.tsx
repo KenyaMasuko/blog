@@ -20,7 +20,7 @@ export default jsxRenderer(({ children, title }) => {
           <link href={styles} rel="stylesheet" />
         )}
       </head>
-      <body>
+      <body class='dark:bg-gray-800 dark:text-white'>
         <Layout>{children}</Layout></body>
     </html>
   )

@@ -1,6 +1,5 @@
 import { css } from "hono/css";
 import { createRoute } from "honox/factory";
-import { getPosts } from "../lib/posts";
 import { Me } from "../components/me";
 
 

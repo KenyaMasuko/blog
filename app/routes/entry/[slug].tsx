@@ -1,6 +1,7 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
 import { getPostByEntryName, getPosts } from "../../lib/posts";
+import { convertDateToJaYYMMDD } from "../../lib/date";
 
 export default createRoute(
   ssgParams(() => {
@@ -17,16 +18,22 @@ export default createRoute(
 
     const post = getPostByEntryName(slug);
     const title = post?.frontmatter.title;
-    const description = post?.frontmatter.description;
     const date = post?.frontmatter.date;
 
     return c.render(
       <div>
-        {title && <h1>{title}</h1>}
-        {date && <p>{date}</p>}
-        {description && <p>{description}</p>}
-        {post?.Component({})}
-      </div>,
+        <div>
+          {title && (
+            <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">
+              {title}
+            </h1>
+          )}
+          {date && (
+            <p className="text-sm text-gray-600 dark:text-gray-400">{convertDateToJaYYMMDD(date)}</p>
+          )}
+        </div>
+        <article className="prose dark:prose-invert max-w-none mt-6 markdown">{post?.Component({})}</article>
+      </div>
     );
-  },
+  }
 );

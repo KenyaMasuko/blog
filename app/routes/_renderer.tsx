@@ -1,8 +1,8 @@
-import { Style } from 'hono/css'
-import { jsxRenderer } from 'hono/jsx-renderer'
-import { Script } from 'honox/server'
-import {Layout} from '../components/layout'
-import styles from '../tailwind.css?url'
+import { jsxRenderer } from "hono/jsx-renderer";
+import { Script } from "honox/server";
+import { Layout } from "../components/layout";
+import styles from "../tailwind.css?url";
+import { ENV } from "../constants/env";
 
 export default jsxRenderer(({ children, title }) => {
   return (
@@ -11,22 +11,26 @@ export default jsxRenderer(({ children, title }) => {
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{title}</title>
-        <link rel="icon" href="/favicon.ico" />
+        {import.meta.env.PROD ? (
+          <link rel="icon" href={`${ENV.domain}/favicon.ico`} />
+        ) : (
+          <link rel="icon" href="/favicon.ico" />
+        )}
         {import.meta.env.PROD ? (
           <script src="/static/theme.js" />
         ) : (
           <script src="/app/theme.ts" />
         )}
         <Script src="/app/client.ts" async />
-        <Style />
         {import.meta.env.PROD ? (
           <link href="/styles/style.css" rel="stylesheet" />
         ) : (
           <link href={styles} rel="stylesheet" />
         )}
       </head>
-      <body class='dark:bg-gray-800 dark:text-white'>
-        <Layout>{children}</Layout></body>
+      <body class="dark:bg-gray-800 dark:text-white">
+        <Layout>{children}</Layout>
+      </body>
     </html>
-  )
-})
+  );
+});

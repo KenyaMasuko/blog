@@ -1,6 +1,6 @@
 import honox from "honox/vite";
 import client from "honox/vite/client";
-import { defineConfig } from "vite";
+import { defineConfig, normalizePath } from "vite";
 import ssg from "@hono/vite-ssg";
 import mdx from "@mdx-js/rollup";
 import remarkFrontmatter from "remark-frontmatter";
@@ -10,6 +10,8 @@ import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import rehypeStringify from "rehype-stringify";
 import rehypePrettyCode from "rehype-pretty-code";
+import { viteStaticCopy } from "vite-plugin-static-copy";
+import path from "node:path";
 
 export default defineConfig(({ mode }) => {
 	if (mode === "client") {
@@ -39,19 +41,37 @@ export default defineConfig(({ mode }) => {
 					[rehypePrettyCode, { theme: "catppuccin-mocha" }],
 				],
 			}),
+			viteStaticCopy({
+				targets: [
+					{
+						src: ["./app/assets/**/*.avif"],
+						dest: "assets",
+						rename: (
+							_fileName: string,
+							_fileExtension: string,
+							fullPath: string,
+						) => {
+							const destPath = normalizePath(
+								path.relative(__dirname, fullPath).replace(/^app\/.*\//, ""),
+							);
+							return destPath;
+						},
+						overwrite: false,
+					},
+				],
+			}),
 		],
 		build: {
 			assetsDir: "static",
 			emptyOutDir: false,
 			ssrEmitAssets: false,
 			rollupOptions: {
-				input: ["./app/tailwind.css"],
+				input: ["./app/tailwind.css", "./app/theme.ts"],
 				output: {
-					entryFileNames: "[name].js",
+					entryFileNames: "static/[name].js",
 					assetFileNames: (assetInfo) => {
-						if (assetInfo.name === "tailwind.css") {
-							return "styles/style.css";
-						}
+						if (assetInfo.name === "tailwind.css") return "styles/style.css";
+						if (assetInfo.name === "theme.js") return "static/theme.js";
 						return assetInfo.name ?? "";
 					},
 				},

@@ -2,7 +2,7 @@
 title: VMware fusion 上のKali Linux内でKerbruteをarm64でビルドする
 date: 2024-10-19T09:20:57.498Z
 description: Apple silicon上でKerbruteを動かすためにarm64のバイナリをビルドした話
-iconUrl: 
+iconUrl: https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Optical%20disk/Flat/optical_disk_flat.svg
 ---
 
 # 問題
@@ -10,19 +10,17 @@ Apple silicon上でamd64のバイナリが動かないので別途arm64のバイ
 
 ## 解決策
 下記のPRをもとにarm64のバイナリをビルドする。
-https://github.com/ropnop/kerbrute/issues/50#issuecomment-1238926177
+<ExternalOgp url="https://github.com/ropnop/kerbrute/issues/50#issuecomment-1238926177" />
+
 
 ### 手順
 1. ソースコードをローカルにダウンロードする。gitを使用してクローンしても、GitHubから直接ダウンロードしても良い。
 2. nanoを使用してMakefileを編集する。
    - `ARCHS=amd64 386 arm64`に変更する。
 3. goをインストールする
-  - `sudo apt install gccgo-go`
-  - `sudo apt install golang-go`
-4. `make linux`を実行すてarm64のバイナリでビルドされたものが生成される
+   - `sudo apt install gccgo-go`
+   - `sudo apt install golang-go`
+4. `make linux`を実行してarm64のバイナリでビルドされたものが生成される
 
 ## まとめ
 arm64のバイナリをビルドすることでApple silicon上でKerbruteを動かすことができるようになった。
-
-
-

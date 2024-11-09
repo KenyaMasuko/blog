@@ -44,6 +44,7 @@ export default createRoute(
 					{post?.Component({})}
 				</article>
 			</div>,
+			{ title },
 		);
 	},
 );

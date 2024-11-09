@@ -13,6 +13,6 @@ export default createRoute(async (c) => {
 				</Fragment>
 			))}
 		</div>,
-		{ title: "ブログ" },
+		{ title: "ブログ一覧" },
 	);
 });

@@ -14,6 +14,7 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 import path from "node:path";
 
 export default defineConfig(({ mode }) => {
+	console.log("=============== import vite config ===============");
 	if (mode === "client") {
 		return {
 			plugins: [client()],
@@ -64,7 +65,7 @@ export default defineConfig(({ mode }) => {
 		build: {
 			assetsDir: "static",
 			emptyOutDir: false,
-			ssrEmitAssets: false,
+			ssrEmitAssets: true,
 			rollupOptions: {
 				input: ["./app/tailwind.css", "./app/theme.ts"],
 				output: {
@@ -79,7 +80,18 @@ export default defineConfig(({ mode }) => {
 		},
 		ssr: {
 			target: "node",
-			external: ["@mdx-js/mdx", "jsdom"],
+			external: [
+				"unified",
+				"@mdx-js/mdx",
+				"satori",
+				"@resvg/resvg-js",
+				"feed",
+				"budoux",
+				"jsdom",
+			],
 		},
+		server: {
+			host: "0.0.0.0",
+		}
 	};
 });

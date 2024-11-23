@@ -44,7 +44,7 @@ export default createRoute(
 					{post?.Component({})}
 				</article>
 			</div>,
-			{ title },
+			{ title, entryName: slug, frontmatter: post?.frontmatter },
 		);
 	},
 );

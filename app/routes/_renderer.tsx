@@ -4,9 +4,9 @@ import { Layout } from "../components/layout";
 import styles from "../tailwind.css?url";
 import { BLOG_NAME, ENV } from "../constants/env";
 
-export default jsxRenderer(({ children, title, frontmatter }) => {
+export default jsxRenderer(({ children, title, frontmatter, entryName }) => {
 	const pageTitle = title ? `${title} | ${BLOG_NAME}` : BLOG_NAME;
-	const ogpPath = title ? `/ogp/${title}.png` : "";
+	const ogpPath = entryName ? `/ogp/${entryName}.png` : "";
 	const c = useRequestContext();
 	const currentUrl = c.req.url;
 	const description = frontmatter?.description ?? "kenchan's blog";
@@ -16,8 +16,8 @@ export default jsxRenderer(({ children, title, frontmatter }) => {
 			<head>
 				<meta charset="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-				<meta property="og:title" content={pageTitle} />
-				<meta property="og:image" content={`${ENV.domain}${ogpPath}`} />
+				{title && <meta property="og:title" content={pageTitle} />}
+				{entryName && <meta property="og:image" content={`${ENV.domain}${ogpPath}`} />}
 				<meta property="og:url" content={currentUrl} />
 				<meta property="og:type" content="article" />
 				<meta property="og:description" content={description} />

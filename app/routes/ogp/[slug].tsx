@@ -1,6 +1,6 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
-import { getPosts } from "../../lib/posts";
+import { getPostByEntryName, getPosts } from "../../lib/posts";
 import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import { BLOG_NAME } from "../../constants/env";
@@ -64,16 +64,20 @@ export default createRoute(
 	ssgParams(() => {
 		const posts = getPosts();
 		return posts.map((p) => ({
-			title: p.frontmatter.title ?? "",
+			slug: p.entryName,
 		}));
 	}),
 	async (c) => {
 		console.log("=============== now building ogp image ===============");
-		const title = c.req.param("title");
-		if(title === ":title") {
+		const entryName = c.req.param("slug");
+		if(entryName === ":slug") {
 			c.status(404);
 			return c.body("Not found");
 		}
+		
+		const post = getPostByEntryName(entryName);
+		const title = post?.frontmatter?.title ?? "";
+
 		const notoSansBold = await loadGoogleFont({
 			family: "Noto Sans JP",
 			weight: 600,

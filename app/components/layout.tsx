@@ -36,7 +36,7 @@ export const Layout: FC<Props> = ({ children }) => {
 							))}
 						</ul>
 					</div>
-					<div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 mt-4 sticky top-64">
+					{/* <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 mt-4 sticky top-64">
 						<h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
 							カテゴリー
 						</h2>
@@ -47,7 +47,7 @@ export const Layout: FC<Props> = ({ children }) => {
 								</Fragment>
 							))}
 						</div>
-					</div>
+					</div> */}
 				</aside>
 			</main>
 			<footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">

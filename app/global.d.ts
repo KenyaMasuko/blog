@@ -2,6 +2,8 @@ import {} from 'hono'
 
 type Head = {
   title?: string
+  entryName?: string
+  frontmatter?: Frontmatter
 }
 
 declare module 'hono' {

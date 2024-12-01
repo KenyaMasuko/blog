@@ -12,12 +12,14 @@ export default jsxRenderer(({ children, title, frontmatter, entryName }) => {
 	const description = frontmatter?.description ?? "kenchan's blog";
 
 	return (
-		<html lang="en">
+		<html lang="ja">
 			<head>
 				<meta charset="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				{title && <meta property="og:title" content={pageTitle} />}
-				{entryName && <meta property="og:image" content={`${ENV.domain}${ogpPath}`} />}
+				{entryName && (
+					<meta property="og:image" content={`${ENV.domain}${ogpPath}`} />
+				)}
 				<meta property="og:url" content={currentUrl} />
 				<meta property="og:type" content="article" />
 				<meta property="og:description" content={description} />
@@ -26,10 +28,7 @@ export default jsxRenderer(({ children, title, frontmatter, entryName }) => {
 				<meta name="twitter:site" content="@kenchan_dayoooo" />
 				<meta name="twitter:title" content={pageTitle} />
 				<meta name="twitter:description" content={description} />
-				<meta
-					name="twitter:image"
-					content={`${ENV.domain}${ogpPath}`}
-				/>
+				<meta name="twitter:image" content={`${ENV.domain}${ogpPath}`} />
 				<title>{pageTitle}</title>
 				{import.meta.env.PROD ? (
 					<link rel="icon" href={`${ENV.domain}/assets/avatar.avif`} />

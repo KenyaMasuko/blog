@@ -25,41 +25,21 @@ const result = await prompts(
 const entryTitle = result.entryTitle as string;
 const entryPath = result.entryPath as string;
 
-// yyyyMMddの形式で今日の日付を取得
 const date = new Date();
-const yyyyMM = date
-	.toLocaleDateString("ja-JP", {
-		year: "numeric",
-		month: "2-digit",
-	})
-	.replace("/", "");
 const yyyy = date.getFullYear();
 const MM = date.getMonth() + 1;
-console.log("hellooooo");
-console.log(yyyy, MM);
 
-// const yyyyMMdd = date
-// 	.toLocaleDateString("ja-JP", {
-// 		year: "numeric",
-// 		month: "2-digit",
-// 		day: "2-digit",
-// 	})
-// 	.replaceAll("/", "");
-
-const { exitCode } = await $`ls ./app/articles/${yyyy}/${MM}`.quiet();
-
-// MEMO: 今日の日付のディレクトリを生成
-if (exitCode !== 0) {
-	await $`mkdir ./app/articles/${yyyy}/${MM}`;
-} else {
+try {
 	const { exitCode } = await $`ls ./app/articles/${yyyy}/${MM}`.quiet();
 	if (exitCode !== 0) {
-		await $`mkdir ./app/articles/${yyyy}/${MM}/`;
+		await $`mkdir -p ./app/articles/${yyyy}/${MM}`;
 	}
+} catch (error) {
+	console.error("error: ", error);
+	await $`mkdir -p ./app/articles/${yyyy}/${MM}`;
 }
 
-// MEMO: ファイルを生成
-await $`touch ./app/articles/${yyyy}/${MM}//${entryPath}.mdx`;
+await $`touch ./app/articles/${yyyy}/${MM}/${entryPath}.mdx`;
 
 const frontMatter = `---
 title: ${entryTitle}

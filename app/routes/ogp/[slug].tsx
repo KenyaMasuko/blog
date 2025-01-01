@@ -9,7 +9,7 @@ const buildGoogleFontUrl = ({
 	family,
 	weight,
 	text,
-	display
+	display,
 }: {
 	family: string;
 	weight?: number;
@@ -18,7 +18,7 @@ const buildGoogleFontUrl = ({
 }) => {
 	const params: Record<string, string> = {
 		family: `${encodeURIComponent(family)}${weight ? `:wght@${weight}` : ""}`,
-	}
+	};
 	if (text) {
 		params.text = encodeURIComponent(text);
 	} else {
@@ -27,30 +27,32 @@ const buildGoogleFontUrl = ({
 	if (display) {
 		params.display = display;
 	}
-	return `https://fonts.googleapis.com/css2?${Object.entries(params).map(([key, value]) => `${key}=${value}`).join("&")}`;
-}
+	return `https://fonts.googleapis.com/css2?${Object.entries(params)
+		.map(([key, value]) => `${key}=${value}`)
+		.join("&")}`;
+};
 
 const loadGoogleFont = async ({
 	family,
-	weight, 
-	text
+	weight,
+	text,
 }: {
 	family: string;
 	weight?: number;
-	text?: string
+	text?: string;
 }) => {
 	const url = buildGoogleFontUrl({ family, weight, text });
 	const res = await fetch(url, {
 		headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; de-at) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1",
-    },
+			"User-Agent":
+				"Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; de-at) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1",
+		},
 	});
 	const css = await res.text();
 	const fontUrl = css.match(
-    /src: url\((.+)\) format\('(opentype|truetype)'\)/,
-  )?.[1];
-	
+		/src: url\((.+)\) format\('(opentype|truetype)'\)/,
+	)?.[1];
+
 	if (!fontUrl) {
 		throw new Error("fontUrl not found");
 	}
@@ -58,7 +60,7 @@ const loadGoogleFont = async ({
 	const font = await fetch(fontUrl);
 
 	return font.arrayBuffer();
-}
+};
 
 export default createRoute(
 	ssgParams(() => {
@@ -68,13 +70,13 @@ export default createRoute(
 		}));
 	}),
 	async (c) => {
-		console.log("=============== now building ogp image ===============");
+		console.info("=============== ogp image building ===============");
 		const entryName = c.req.param("slug");
-		if(entryName === ":slug") {
+		if (entryName === ":slug") {
 			c.status(404);
 			return c.body("Not found");
 		}
-		
+
 		const post = getPostByEntryName(entryName);
 		const title = post?.frontmatter?.title ?? "";
 
@@ -84,20 +86,19 @@ export default createRoute(
 		});
 
 		const svg = await satori(
-			<div tw={"w-full h-full flex p-9"} style={{
-				background: "linear-gradient(180deg, #FFCB67, #FF9A67)"
-			}}>
+			<div
+				tw={"w-full h-full flex p-9"}
+				style={{
+					background: "linear-gradient(180deg, #FFCB67, #FF9A67)",
+				}}
+			>
 				<div
 					tw={
 						"bg-white rounded-3xl border-solid w-full flex flex-col justify-end"
 					}
 				>
 					<div tw={"flex w-full flex-1 items-center mt-10 px-34"}>
-						<div
-							tw={`flex justify-center  text-[4rem] flex-wrap`}
-						>
-							{title}
-						</div>
+						<div tw={`flex justify-center  text-[4rem] flex-wrap`}>{title}</div>
 					</div>
 					<div
 						tw={
@@ -126,18 +127,20 @@ export default createRoute(
 			{
 				width: 1200,
 				height: 630,
-				fonts: [{
-					name: "Noto Sans JP",
-					data: notoSansBold,
-					weight: 600,
-					style: "normal",
-				}],
+				fonts: [
+					{
+						name: "Noto Sans JP",
+						data: notoSansBold,
+						weight: 600,
+						style: "normal",
+					},
+				],
 			},
 		);
 
 		const body = new Resvg(svg).render().asPng();
 
-		console.log("=============== ogp image built ===============");
+		console.info("=============== finished building ogp image ===============");
 
 		c.header("Content-Type", "image/png");
 		return c.body(body);

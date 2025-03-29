@@ -1,0 +1,85 @@
+---
+title: Web Speed Hackathon 2025に参加してきました
+date: 2025-03-29T19:31:40.153Z
+description: 2025/03/22 ~ 2025/03/23に開催されたWeb Speed Hackathon に参加した記録や感想を書いています
+iconUrl: 
+published: false
+---
+import avatar from "../assets/avatar.avif?url";
+
+去年に引き続き今年もWeb Speed Hackathon 2025に参加してきました。この記事はとても楽しいイベントだったので感想つらつらと書いていきます。
+<AnchorLink href="https://note.com/ca_tech/n/nc5a4a4077ad6">Web Speed Hackathon 2024のイベントレポート</AnchorLink>にも私が同僚と参加してる写真が載っています笑
+
+
+# Web Speed Hackathonについて
+Web Speed Hackathon（以降WSHと記載します） はサイバーエージェントが 主催するパフォーマンスチューニングのイベントです。予めWebアプリケーションが用意されているのですが、このアプリが非常に重いのでそのパフォーマンスを改善し、スコアを競うというものです。
+
+今年は「架空の動画配信サービス」という題材でした。去年もそうだったんですが、お題となるWebアプリケーションの完成度が高くて、非常に驚きます。リポジトリは下記になります。
+<ExternalOgp url="https://github.com/CyberAgentHack/web-speed-hackathon-2025" />
+
+## 競技中
+やったことをざっくりとまとめます（詳細な説明などは省きます。コードやアプリケーション自体のコンテキストがない状態だとわかりにくいかもしれません🙏）
+
+### 1. バンドルサイズの計測と削減
+
+まずはJSの配信量を削減するために、アプリケーションのバンドルサイズを計測します。今回フロントエンドはReactで作られておりwebpackを利用していましたので、`webpack-bundle-analyzer`を利用してバンドルサイズを計測します。
+![バンドルサイズ計測](bundle-size1.avif)
+これを元に不要なパッケージを削除したり、JSのバンドルを分割したりしてバンドルサイズを削減していきます。最初の段階で明らか不要なものは削れますが、何せ初見のパッケージが多いのでそれぞれが何をやっているのか、他のチューニングも進めつつ、都度都度調べながらパッケージの要不要を判断して削除していくのが大変でした。
+
+### 2. 画像の軽量化
+
+画像の軽量化は手軽にできるので、まずは画像の軽量化を行います。
+アプリケーション内で利用されている画像を`png`から`avif`に変換しました。
+画像の枚数が30枚以上あった気がして手作業で1つ1つavifに変換するのはめんどくさかったので、cliで変換できるようにCursorにお願いしてshell scriptを作成してもらいました。`png`から`avif`に変換するのは`libavif`を利用しました。
+<ExternalOgp url="https://github.com/AOMediaCodec/libavif/tree/main" />
+
+### 3. SSRの導入
+
+やはりSPAよりもSSRの方がLighthouseのスコアが改善しそうだなと思ったのと、もともとアプリケーション内でSSRの途中みたいなコードがあったので、それを利用する形でSSRを実現します。
+<ExternalOgp url="https://github.com/CyberAgentHack/web-speed-hackathon-2025/blob/main/workspaces/server/src/ssr.tsx#L54-L60" />
+上記で記載したコードの実行結果が利用されていないので、計算結果を含めたHTMLをclientに返すようにしました。
+ただ、SSRの自前実装が自分でやったことがない上にReact Routerやzustandなど普段あまり使わないパッケージを含めた上での実装だったのでかなり苦戦しました。個人的にはSSRの仕組みの理解に役立ったのでとても良い経験だったと思います。
+
+### 4. JS→CSSへの書き換え
+
+client側のコードにはCSSで表現できるのにJSで計算してCSSのような振る舞いをしているやつが隠れています（去年もあった気がする）。たとえば下記のような`Hoverable`コンポーネントはCSSで表現することができます。
+```tsx Hoverable.tsx
+export const Hoverable = (props: Props) => {
+  const child = Children.only(props.children);
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  const mergedRef = useMergeRefs([elementRef, child.props.ref].filter((v) => v != null));
+
+  const pointer = usePointer();
+  const elementRect = elementRef.current?.getBoundingClientRect();
+
+  const hovered =
+    elementRect != null &&
+    elementRect.left <= pointer.x &&
+    pointer.x <= elementRect.right &&
+    elementRect.top <= pointer.y &&
+    pointer.y <= elementRect.bottom;
+
+  return cloneElement(child, {
+    className: classNames(
+      child.props.className,
+      'cursor-pointer',
+      hovered ? props.classNames.hovered : props.classNames.default,
+    ),
+    ref: mergedRef,
+  });
+};
+```
+これ以外にもaspect-ratioやカルーセルをJSで実装しているものがあったのですが、時間がなくてそれらを書き換えることができませんでした。悔しい🫠
+
+### 5. CSSのチューニング
+
+アプリケーション内ではスタリングに<AnchorLink href="https://unocss.dev/">UnoCSS</AnchorLink>を利用しています。これはCSSのユーティリティを提供してくれるパッケージで、これを利用することでCSSをより楽に書くことができるらしいです。
+ただコードやPerformanceタブを眺めているとUnoCSSのランタイムでの計算がまあまあ発生していそうだったので、UnoCSSの読み込みをビルド時に生成したCSSを読み込む方法に変えました。しかしここでのマイグレーション作業が私のwebpackの環境では何故かうまくいかず、結局`@unocss/cli`を利用してビルドすることになりました。むずい🥲
+
+とここまでやったところで時間切れになってしまいました😇
+
+## 感想
+今年は去年よりは時間内で色々やれたかなと思っていて、多少成長を感じたのでよかったです。何よりめちゃめちゃ楽しかった！来年もあればぜひ参加したいです！！
+
+運営の方々、大変お疲れ様でした！ありがとうございました🙏

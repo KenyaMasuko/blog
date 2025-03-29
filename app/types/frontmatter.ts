@@ -4,4 +4,5 @@ export type Frontmatter = {
 	description: string;
 	categories: string[];
 	iconUrl: string;
+	published: boolean;
 };

@@ -35,7 +35,7 @@ Web Speed Hackathonはサイバーエージェントが主催するパフォー�
 
 ### 3. SSRの導入
 
-やはりSPAよりもSSRの方がLighthouseのスコアが改善しそうだなと思ったのと、もともとアプリケーション内でSSRの途中みたいなコードがあったので、それを利用する形でSSRを実現します。
+やはりCSRよりもSSRの方がLighthouseのスコアが改善しそうだなと思ったのと、もともとアプリケーション内でSSRの途中みたいなコードがあったので、それを利用する形でSSRを実現します。
 <ExternalOgp url="https://github.com/CyberAgentHack/web-speed-hackathon-2025/blob/main/workspaces/server/src/ssr.tsx#L54-L60" />
 上記で記載したコードの実行結果が利用されていないので、計算結果を含めたHTMLをclientに返すようにしました。
 ただ、SSRの自前実装が自分でやったことがない上にReact Routerやzustandなど普段あまり使わないパッケージを含めた上での実装だったのでかなり苦戦しました。個人的にはSSRの仕組みの理解に役立ったのでとても良い経験だったと思います。

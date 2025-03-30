@@ -8,35 +8,43 @@ import { Header } from "../islands/header";
 
 type Props = {
 	children: Child;
+	showSidebar: boolean;
 };
 
-export const Layout: FC<Props> = ({ children }) => {
+export const Layout: FC<Props> = ({ children, showSidebar = true }) => {
 	const posts = getPosts();
 
 	return (
 		<div className={"min-h-screen flex flex-col"}>
 			<Header />
-			<main className="flex-grow container mx-auto px-4 py-8 flex flex-col lg:flex-row">
-				<div className="w-full lg:w-3/4 lg:pr-8">{children}</div>
-				<aside className="w-full lg:w-1/4 mt-8 lg:mt-0">
-					<div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 sticky top-20">
-						<h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-							最近の投稿
-						</h2>
-						<ul className="space-y-2">
-							{posts.slice(0, 3).map((p) => (
-								<li key={p.entryName}>
-									<a
-										href={`/entry/${p.entryName}`}
-										className="text-blue-600 dark:text-blue-400 hover:underline"
-									>
-										{p.frontmatter.title}
-									</a>
-								</li>
-							))}
-						</ul>
-					</div>
-					{/* <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 mt-4 sticky top-64">
+			<main
+				className={`flex-grow container mx-auto px-4 py-8 flex flex-col lg:flex-row ${
+					showSidebar ? "lg:pr-8" : "justify-center"
+				}`}
+			>
+				<div className={`w-full ${showSidebar ? "lg:pr-8 lg:w-3/4 " : ""}`}>
+					{children}
+				</div>
+				{showSidebar && (
+					<aside className="w-full lg:w-1/4 mt-8 lg:mt-0">
+						<div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 sticky top-20">
+							<h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
+								最近の投稿
+							</h2>
+							<ul className="space-y-2">
+								{posts.slice(0, 3).map((p) => (
+									<li key={p.entryName}>
+										<a
+											href={`/entry/${p.entryName}`}
+											className="text-blue-600 dark:text-blue-400 hover:underline"
+										>
+											{p.frontmatter.title}
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
+						{/* <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 mt-4 sticky top-64">
 						<h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
 							カテゴリー
 						</h2>
@@ -48,7 +56,8 @@ export const Layout: FC<Props> = ({ children }) => {
 							))}
 						</div>
 					</div> */}
-				</aside>
+					</aside>
+				)}
 			</main>
 			<footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
 				<div className="container mx-auto px-4 py-6 text-center text-gray-600 dark:text-gray-400">

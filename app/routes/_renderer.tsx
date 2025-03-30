@@ -48,7 +48,9 @@ export default jsxRenderer(({ children, title, frontmatter, entryName }) => {
 				)}
 			</head>
 			<body class="dark:bg-gray-800 dark:text-white">
-				<Layout>{children}</Layout>
+				<Layout showSidebar={!currentUrl.includes("/entry/")}>
+					{children}
+				</Layout>
 			</body>
 		</html>
 	);

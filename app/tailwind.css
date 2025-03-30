@@ -125,7 +125,7 @@ code {
 }
 
 .markdown code:not([data-theme="catppuccin-mocha"]) {
-  @apply text-sm inline bg-gray-200 text-gray-600 dark:bg-gray-800 dark:text-gray-200 rounded px-1.5 py-1 mx-0.5 tracking-wide;
+  @apply text-sm inline bg-gray-200 text-gray-600 dark:bg-gray-600 dark:text-gray-200 rounded px-1.5 py-1 mx-0.5 tracking-wide;
 }
 
 .markdown pre {

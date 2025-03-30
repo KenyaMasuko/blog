@@ -12,7 +12,7 @@ const theme = () => {
 		.addEventListener("change", (e) => setTheme(e.matches));
 
 	const currentTheme = localStorage.getItem("theme");
-	setTheme(currentTheme === "dark");
+	setTheme(currentTheme === null ? true : currentTheme === "dark");
 };
 
 theme();

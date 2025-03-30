@@ -12,9 +12,7 @@ export const Me = () => {
 			</h1>
 			<div className="flex flex-col md:flex-row items-start md:items-center mb-6">
 				<img
-					src={
-						import.meta.env.PROD ? `${ENV.domain}/assets/avatar.avif` : avatar
-					}
+					src={import.meta.env.PROD ? "/assets/avatar.avif" : avatar}
 					alt="Kenya"
 					className="rounded-full mb-4 md:mb-0 md:mr-6"
 					width={100}

@@ -13,10 +13,17 @@ export default createRoute(
 	async (c) => {
 		const slug = c.req.param("slug");
 		if (!slug) {
-			return c.render(<div>Not found</div>);
+			return c.render(
+				<div>Oops! The page you are looking for does not exist ;(</div>,
+			);
 		}
 
 		const post = getPostByEntryName(slug);
+		if (!post) {
+			return c.render(
+				<div>Oops! The page you are looking for does not exist ;(</div>,
+			);
+		}
 		const title = post?.frontmatter.title;
 		const date = post?.frontmatter.date;
 		const iconUrl =

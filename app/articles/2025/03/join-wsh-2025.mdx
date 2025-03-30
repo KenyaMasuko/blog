@@ -2,8 +2,8 @@
 title: Web Speed Hackathon 2025に参加してきました
 date: 2025-03-29T19:31:40.153Z
 description: 2025/03/22 ~ 2025/03/23に開催されたWeb Speed Hackathon に参加した記録や感想を書いています
-iconUrl: 
-published: false
+iconUrl: https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Person%20biking/Default/Flat/person_biking_flat_default.svg
+published: true
 ---
 import avatar from "../assets/avatar.avif?url";
 
@@ -43,7 +43,7 @@ Web Speed Hackathon（以降WSHと記載します） はサイバーエージェ
 ### 4. JS→CSSへの書き換え
 
 client側のコードにはCSSで表現できるのにJSで計算してCSSのような振る舞いをしているやつが隠れています（去年もあった気がする）。たとえば下記のような`Hoverable`コンポーネントはCSSで表現することができます。
-```tsx Hoverable.tsx
+```tsx title="Hoverable.tsx" showLineNumbers
 export const Hoverable = (props: Props) => {
   const child = Children.only(props.children);
   const elementRef = useRef<HTMLDivElement>(null);

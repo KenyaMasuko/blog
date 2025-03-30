@@ -87,41 +87,34 @@ export default createRoute(
 
 		const svg = await satori(
 			<div
-				tw={"w-full h-full flex p-9"}
-				style={{
-					background: "linear-gradient(180deg, #FFCB67, #FF9A67)",
-				}}
+				tw={
+					"w-full h-full flex bg-white border-solid w-full flex flex-col justify-end"
+				}
 			>
+				<div tw={"flex w-full flex-1 items-center mt-10 px-20"}>
+					<div tw={"flex justify-center  text-[4rem] flex-wrap"}>title</div>
+				</div>
 				<div
 					tw={
-						"bg-white rounded-3xl border-solid w-full flex flex-col justify-end"
+						"flex px-18 mb-10 items-center justify-between w-full text-[#444444]"
 					}
 				>
-					<div tw={"flex w-full flex-1 items-center mt-10 px-34"}>
-						<div tw={`flex justify-center  text-[4rem] flex-wrap`}>{title}</div>
+					<div tw="text-4xl flex items-center">
+						<img
+							alt="avatar"
+							tw="rounded-full mr-4 w-18 h-18"
+							src="https://avatars.githubusercontent.com/u/85816730?v=4"
+						/>
+						hogehoge
 					</div>
-					<div
-						tw={
-							"flex px-18 mb-10 items-center justify-between w-full text-[#444444]"
-						}
+					<h1
+						style={{
+							fontWeight: 600,
+							fontFamily: "Noto Sans JP",
+						}}
 					>
-						<div tw="text-4xl flex items-center">
-							<img
-								alt="avatar"
-								tw="rounded-full mr-4 w-18 h-18"
-								src="https://avatars.githubusercontent.com/u/85816730?v=4"
-							/>
-							{BLOG_NAME}
-						</div>
-						<h1
-							style={{
-								fontWeight: 600,
-								fontFamily: "Noto Sans JP",
-							}}
-						>
-							kenchandayo.xyz
-						</h1>
-					</div>
+						kenchandayo.xyz
+					</h1>
 				</div>
 			</div>,
 			{

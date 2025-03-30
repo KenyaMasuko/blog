@@ -74,18 +74,6 @@ body {
   @apply text-sm border-l-4 border-gray-300 pl-4 pr-4 text-gray-600 dark:text-gray-300;
 }
 
-.markdown code:not([data-theme="moonlight-ii"]) {
-  @apply text-sm inline bg-gray-200 text-gray-600 dark:bg-gray-600 dark:text-gray-200 rounded px-1.5 py-1 mx-0.5 tracking-wide;
-}
-
-.markdown pre {
-  @apply bg-gray-100 rounded p-1;
-}
-
-.markdown pre code {
-  @apply block bg-transparent p-0 overflow-visible rounded-none;
-}
-
 .markdown ul {
   @apply text-base pl-8 list-disc;
 }
@@ -110,11 +98,6 @@ body {
   @apply border py-1 px-3;
 }
 
-/* Override pygments style background color. */
-.markdown .highlight pre {
-  @apply bg-gray-100 !important;
-}
-
 .source {
   @apply text-right italic;
 }
@@ -127,4 +110,54 @@ body {
 
 .sr-only {
   @apply border-t border-gray-300 my-3;
+}
+
+
+/* コードブロックのスタイル */
+pre,
+code,
+figure {
+  @apply overflow-x-auto;
+}
+
+code {
+  @apply text-sm md:text-base !leading-normal;
+}
+
+.markdown code:not([data-theme="catppuccin-mocha"]) {
+  @apply text-sm inline bg-gray-200 text-gray-600 dark:bg-gray-800 dark:text-gray-200 rounded px-1.5 py-1 mx-0.5 tracking-wide;
+}
+
+.markdown pre {
+  @apply bg-gray-100 rounded py-2;
+}
+
+.markdown pre code {
+  @apply block bg-transparent p-0 overflow-visible rounded-none;
+}
+
+/* タイトル */
+[data-rehype-pretty-code-title] {
+  @apply bg-zinc-700 text-zinc-200 rounded-t-lg py-2 px-3 font-semibold text-sm;
+}
+
+figure[data-rehype-pretty-code-figure]:has(> [data-rehype-pretty-code-title])
+  pre {
+  @apply !rounded-t-none;
+}
+
+/* 行番号 */
+code[data-line-numbers] {
+  counter-reset: line;
+}
+
+code[data-line-numbers] > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  @apply inline-block w-4 mr-4 text-right text-gray-500;
+}
+
+/* 行のスタイル */
+span[data-line] {
+  @apply px-4;
 }

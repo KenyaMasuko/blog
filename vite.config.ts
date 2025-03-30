@@ -33,7 +33,15 @@ export default defineConfig(({ mode }) => {
 				remarkPlugins: [
 					remarkFrontmatter,
 					remarkMdxFrontmatter,
-					[remarkRehype],
+					[
+						remarkRehype,
+						{
+							footnoteBackContent: "↩︎",
+							footnoteLabel: " ",
+							footnoteLabelTagName: "hr",
+							footnoteBackLabel: "Back to reference 1",
+						},
+					],
 					remarkGfm,
 					remarkParse,
 				],
@@ -92,6 +100,6 @@ export default defineConfig(({ mode }) => {
 		},
 		server: {
 			host: "0.0.0.0",
-		}
+		},
 	};
 });

@@ -92,7 +92,7 @@ export default createRoute(
 				}
 			>
 				<div tw={"flex w-full flex-1 items-center mt-10 px-20"}>
-					<div tw={"flex justify-center  text-[4rem] flex-wrap"}>title</div>
+					<div tw={"flex justify-center  text-[4rem] flex-wrap"}>{title}</div>
 				</div>
 				<div
 					tw={
@@ -105,7 +105,7 @@ export default createRoute(
 							tw="rounded-full mr-4 w-18 h-18"
 							src="https://avatars.githubusercontent.com/u/85816730?v=4"
 						/>
-						hogehoge
+						{BLOG_NAME}
 					</div>
 					<h1
 						style={{

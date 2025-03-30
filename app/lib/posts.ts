@@ -27,7 +27,9 @@ const sortByDateDesc = ():
 
 export const getPosts = () => {
 	const postsData = Object.entries(posts)
-		.filter(([_, post]) => post.frontmatter.published)
+		.filter(([_, post]) =>
+			import.meta.env.PROD ? post.frontmatter.published : true,
+		)
 		.sort(sortByDateDesc())
 		.map(([path, post]) => {
 			const entryName = getEntryNameFromPath(path);

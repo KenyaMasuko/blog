@@ -2,6 +2,7 @@ import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
 import { getPostByEntryName, getPosts } from "../../lib/posts";
 import { convertDateToJaYYMMDD } from "../../lib/date";
+import { TagBadge } from "../../components/tag-badge";
 
 export default createRoute(
 	ssgParams(() => {
@@ -45,6 +46,13 @@ export default createRoute(
 						<p className="text-sm text-gray-600 dark:text-gray-400">
 							{convertDateToJaYYMMDD(date)}
 						</p>
+					)}
+					{post?.frontmatter.tags && post.frontmatter.tags.length > 0 && (
+						<div className="mt-4">
+							{post.frontmatter.tags.map((tag) => (
+								<TagBadge tag={tag} />
+							))}
+						</div>
 					)}
 				</div>
 				<article className="prose dark:prose-invert max-w-none mt-6 markdown">

@@ -135,7 +135,11 @@ export default createRoute(
 
 		console.info("=============== finished building ogp image ===============");
 
-		c.header("Content-Type", "image/png");
-		return c.body(body);
+		const bytes = new Uint8Array(body);
+		return new Response(bytes, {
+			headers: {
+				"Content-Type": "image/png",
+			},
+		});
 	},
 );

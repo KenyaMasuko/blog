@@ -51,3 +51,10 @@ export const getLatestPostsWithoutTargetPost = (postEntryName: string) => {
 	const latestPosts = posts.filter((post) => post.entryName !== postEntryName);
 	return latestPosts.slice(0, 3);
 };
+
+export const getPostsByTag = (tag: string) => {
+	const posts = getPosts();
+	return posts.filter((post) =>
+		post.frontmatter.tags?.includes(tag)
+	);
+};

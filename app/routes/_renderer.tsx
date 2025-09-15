@@ -48,9 +48,16 @@ export default jsxRenderer(({ children, title, frontmatter, entryName }) => {
 				)}
 			</head>
 			<body class="dark:bg-gray-800 dark:text-white">
-				<Layout showSidebar={!currentUrl.includes("/entry/")}>
-					{children}
-				</Layout>
+				{(() => {
+					const isEntryPath = currentUrl.includes("/entry/");
+					const isTagListPath = currentUrl.includes("/entry/tag/");
+					const showSidebar = !isEntryPath || isTagListPath;
+					return (
+						<Layout showSidebar={showSidebar}>
+							{children}
+						</Layout>
+					);
+				})()}
 			</body>
 		</html>
 	);

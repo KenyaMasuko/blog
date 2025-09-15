@@ -58,3 +58,13 @@ export const getPostsByTag = (tag: string) => {
 		post.frontmatter.tags?.includes(tag)
 	);
 };
+
+export const getAllTags = () => {
+	const tagSet = new Set<string>();
+	for (const post of getPosts()) {
+		for (const tag of post.frontmatter.tags ?? []) {
+			tagSet.add(tag);
+		}
+	}
+	return Array.from(tagSet).sort();
+};

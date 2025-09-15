@@ -79,6 +79,7 @@ export default createRoute(
 
 		const post = getPostByEntryName(entryName);
 		const title = post?.frontmatter?.title ?? "";
+		const tags = post?.frontmatter?.tags ?? [];
 
 		const notoSansBold = await loadGoogleFont({
 			family: "Noto Sans JP",
@@ -94,6 +95,25 @@ export default createRoute(
 				<div tw={"flex w-full flex-1 items-center mt-10 px-20"}>
 					<div tw={"flex justify-center  text-[4rem] flex-wrap"}>{title}</div>
 				</div>
+				{tags.length > 0 && (
+					<div tw={"flex flex-wrap px-20"} style={{
+						gap: "12px",
+					}}>
+						{tags.map((tag) => (
+							<span
+								style={{
+									borderColor: "#e5e7eb",
+									color: "#444444",
+									fontWeight: 600,
+									fontFamily: "Noto Sans JP",
+								}}
+								tw="text-2xl px-4 py-1 rounded-full border"
+							>
+								#{tag}
+							</span>
+						))}
+					</div>
+				)}
 				<div
 					tw={
 						"flex px-18 mb-10 items-center justify-between w-full text-[#444444]"

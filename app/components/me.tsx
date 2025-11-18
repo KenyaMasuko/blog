@@ -1,8 +1,8 @@
 import { Fragment } from "hono/jsx";
-import { Skills } from "../constants/skill";
-import { Badge } from "./badge";
 import avatar from "../assets/avatar.avif?url";
 import { ENV } from "../constants/env";
+import { Skills } from "../constants/skill";
+import { Badge } from "./badge";
 
 export const Me = () => {
 	return (

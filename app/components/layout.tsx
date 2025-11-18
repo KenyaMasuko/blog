@@ -1,10 +1,10 @@
-import { Fragment, useState } from "hono/jsx";
 import type { Child, FC } from "hono/jsx";
+import { Fragment, useState } from "hono/jsx";
 import { CATEGORY } from "../constants/category";
-import { getPosts } from "../lib/posts";
-import { ThemeButton } from "../islands/theme-button";
-import { Badge } from "./badge";
 import { Header } from "../islands/header";
+import { ThemeButton } from "../islands/theme-button";
+import { getPosts } from "../lib/posts";
+import { Badge } from "./badge";
 
 type Props = {
 	children: Child;

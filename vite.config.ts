@@ -1,17 +1,17 @@
-import honox from "honox/vite";
-import client from "honox/vite/client";
-import { defineConfig, normalizePath } from "vite";
+import path from "node:path";
 import ssg from "@hono/vite-ssg";
 import mdx from "@mdx-js/rollup";
-import remarkFrontmatter from "remark-frontmatter";
-import remarkMdxFrontmatter from "remark-mdx-frontmatter";
-import remarkRehype from "remark-rehype";
-import remarkGfm from "remark-gfm";
-import remarkParse from "remark-parse";
-import rehypeStringify from "rehype-stringify";
+import honox from "honox/vite";
+import client from "honox/vite/client";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeStringify from "rehype-stringify";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkGfm from "remark-gfm";
+import remarkMdxFrontmatter from "remark-mdx-frontmatter";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import { defineConfig, normalizePath } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
-import path from "node:path";
 
 export default defineConfig(({ mode }) => {
 	console.log("=============== import vite config ===============");

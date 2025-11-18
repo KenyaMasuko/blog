@@ -1,9 +1,9 @@
+import { Resvg } from "@resvg/resvg-js";
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
-import { getPostByEntryName, getPosts } from "../../lib/posts";
 import satori from "satori";
-import { Resvg } from "@resvg/resvg-js";
 import { BLOG_NAME } from "../../constants/env";
+import { getPostByEntryName, getPosts } from "../../lib/posts";
 
 const buildGoogleFontUrl = ({
 	family,
@@ -96,9 +96,12 @@ export default createRoute(
 					<div tw={"flex justify-center  text-[4rem] flex-wrap"}>{title}</div>
 				</div>
 				{tags.length > 0 && (
-					<div tw={"flex flex-wrap px-20"} style={{
-						gap: "12px",
-					}}>
+					<div
+						tw={"flex flex-wrap px-20"}
+						style={{
+							gap: "12px",
+						}}
+					>
 						{tags.map((tag) => (
 							<span
 								style={{

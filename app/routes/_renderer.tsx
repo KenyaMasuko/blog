@@ -1,8 +1,8 @@
 import { jsxRenderer, useRequestContext } from "hono/jsx-renderer";
 import { Script } from "honox/server";
 import { Layout } from "../components/layout";
-import styles from "../tailwind.css?url";
 import { BLOG_NAME, ENV } from "../constants/env";
+import styles from "../tailwind.css?url";
 
 export default jsxRenderer(({ children, title, frontmatter, entryName }) => {
 	const pageTitle = title ? `${title} | ${BLOG_NAME}` : BLOG_NAME;
@@ -52,11 +52,7 @@ export default jsxRenderer(({ children, title, frontmatter, entryName }) => {
 					const isEntryPath = currentUrl.includes("/entry/");
 					const isTagListPath = currentUrl.includes("/entry/tag/");
 					const showSidebar = !isEntryPath || isTagListPath;
-					return (
-						<Layout showSidebar={showSidebar}>
-							{children}
-						</Layout>
-					);
+					return <Layout showSidebar={showSidebar}>{children}</Layout>;
 				})()}
 			</body>
 		</html>

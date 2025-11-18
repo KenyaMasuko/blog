@@ -1,8 +1,8 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
-import { getPostByEntryName, getPosts } from "../../lib/posts";
-import { convertDateToJaYYMMDD } from "../../lib/date";
 import { TagBadge } from "../../components/tag-badge";
+import { convertDateToJaYYMMDD } from "../../lib/date";
+import { getPostByEntryName, getPosts } from "../../lib/posts";
 
 export default createRoute(
 	ssgParams(() => {

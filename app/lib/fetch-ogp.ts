@@ -1,4 +1,5 @@
 import { JSDOM } from "jsdom";
+
 type OgpKey = "title" | "description" | "image" | "url";
 type Ogp = {
 	title: string;

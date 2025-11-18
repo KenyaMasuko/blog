@@ -3,161 +3,159 @@
 @tailwind utilities;
 
 html {
-  @apply text-slate-800;
+	@apply text-slate-800;
 }
 
 body {
-  @apply dark:text-gray-100;
+	@apply dark:text-gray-100;
 }
 
 .markdown {
-  @apply dark:text-gray-100 break-words box-border tracking-wide;
+	@apply dark:text-gray-100 break-words box-border tracking-wide;
 }
 
 .markdown > * + * {
-  @apply mt-2 mb-2;
+	@apply mt-2 mb-2;
 }
 
 .markdown time {
-  @apply mt-0 mb-2;
+	@apply mt-0 mb-2;
 }
 
 .markdown li + li {
-  @apply mt-1;
+	@apply mt-1;
 }
 
 .markdown li > p + p {
-  @apply mt-6;
+	@apply mt-6;
 }
 
 .markdown strong {
-  @apply font-bold;
+	@apply font-bold;
 }
 
 .markdown strong a {
-  @apply font-bold;
+	@apply font-bold;
 }
 
 .markdown p {
-  @apply text-base leading-7 my-4;
+	@apply text-base leading-7 my-4;
 }
 
-.markdown blockquote > p{
-  @apply text-sm;
+.markdown blockquote > p {
+	@apply text-sm;
 }
 
 .markdown h1 {
-  @apply leading-tight text-3xl mb-0 mt-6 pb-2 font-bold;
+	@apply leading-tight text-3xl mb-0 mt-6 pb-2 font-bold;
 }
 
 .markdown h2 {
-  @apply leading-tight text-2xl mb-4 mt-6 pb-2 font-bold;
+	@apply leading-tight text-2xl mb-4 mt-6 pb-2 font-bold;
 }
 
 .markdown h3 {
-  @apply leading-snug text-lg mb-4 mt-6 font-bold;
+	@apply leading-snug text-lg mb-4 mt-6 font-bold;
 }
 
 .markdown h4 {
-  @apply leading-none text-base mb-4 mt-6;
+	@apply leading-none text-base mb-4 mt-6;
 }
 
 .markdown h5 {
-  @apply leading-tight text-sm font-semibold mb-4 mt-6;
+	@apply leading-tight text-sm font-semibold mb-4 mt-6;
 }
 
 .markdown h6 {
-  @apply leading-tight text-sm font-semibold text-gray-600 mb-4 mt-6;
+	@apply leading-tight text-sm font-semibold text-gray-600 mb-4 mt-6;
 }
 
 .markdown blockquote {
-  @apply text-sm border-l-4 border-gray-300 pl-4 pr-4 text-gray-600 dark:text-gray-300;
+	@apply text-sm border-l-4 border-gray-300 pl-4 pr-4 text-gray-600 dark:text-gray-300;
 }
 
 .markdown ul {
-  @apply text-base pl-8 list-disc;
+	@apply text-base pl-8 list-disc;
 }
 
 .markdown ol {
-  @apply text-base pl-8 list-decimal;
+	@apply text-base pl-8 list-decimal;
 }
 
 .markdown kbd {
-  @apply text-xs inline-block rounded border px-1 py-5 align-middle font-normal font-mono shadow;
+	@apply text-xs inline-block rounded border px-1 py-5 align-middle font-normal font-mono shadow;
 }
 
 .markdown table {
-  @apply text-base border-gray-600;
+	@apply text-base border-gray-600;
 }
 
 .markdown th {
-  @apply border py-1 px-3;
+	@apply border py-1 px-3;
 }
 
 .markdown td {
-  @apply border py-1 px-3;
+	@apply border py-1 px-3;
 }
 
 .source {
-  @apply text-right italic;
+	@apply text-right italic;
 }
 
-
 .data-footnote-backref {
-  @apply text-sm;
-  font-family: Hiragino Kaku Gothic ProN;
+	@apply text-sm;
+	font-family: "Hiragino Kaku Gothic ProN", sans-serif;
 }
 
 .sr-only {
-  @apply border-t border-gray-300 my-3;
+	@apply border-t border-gray-300 my-3;
 }
-
 
 /* コードブロックのスタイル */
 pre,
 code,
 figure {
-  @apply overflow-x-auto;
+	@apply overflow-x-auto;
 }
 
 code {
-  @apply text-sm md:text-base !leading-normal;
+	@apply text-sm md:text-base !leading-normal;
 }
 
 .markdown code:not([data-theme="catppuccin-mocha"]) {
-  @apply text-sm inline bg-gray-200 text-gray-600 dark:bg-gray-600 dark:text-gray-200 rounded px-1.5 py-1 mx-0.5 tracking-wide;
+	@apply text-sm inline bg-gray-200 text-gray-600 dark:bg-gray-600 dark:text-gray-200 rounded px-1.5 py-1 mx-0.5 tracking-wide;
 }
 
 .markdown pre {
-  @apply bg-gray-100 rounded py-2;
+	@apply bg-gray-100 rounded py-2;
 }
 
 .markdown pre code {
-  @apply block bg-transparent p-0 overflow-visible rounded-none;
+	@apply block bg-transparent p-0 overflow-visible rounded-none;
 }
 
 /* タイトル */
 [data-rehype-pretty-code-title] {
-  @apply bg-zinc-700 text-zinc-200 rounded-t-lg py-2 px-3 font-semibold text-sm;
+	@apply bg-zinc-700 text-zinc-200 rounded-t-lg py-2 px-3 font-semibold text-sm;
 }
 
 figure[data-rehype-pretty-code-figure]:has(> [data-rehype-pretty-code-title])
-  pre {
-  @apply !rounded-t-none;
+	pre {
+	@apply !rounded-t-none;
 }
 
 /* 行番号 */
 code[data-line-numbers] {
-  counter-reset: line;
+	counter-reset: line;
 }
 
 code[data-line-numbers] > [data-line]::before {
-  counter-increment: line;
-  content: counter(line);
-  @apply inline-block w-4 mr-4 text-right text-gray-500;
+	counter-increment: line;
+	content: counter(line);
+	@apply inline-block w-4 mr-4 text-right text-gray-500;
 }
 
 /* 行のスタイル */
 span[data-line] {
-  @apply px-4;
+	@apply px-4;
 }

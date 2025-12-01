@@ -1,0 +1,174 @@
+---
+title: Next.jsでクエリパラメータを型安全に扱うnuqs
+date: 2025-12-01T14:05:45.734Z
+description: Next.js App RouterでもURLクエリパラメータを型安全に扱えるライブラリnuqsの基本的な使い方と便利なオプションの紹介
+iconUrl: https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Ok%20hand/Light/3D/ok_hand_3d_light.png
+---
+# nuqsとは
+
+[nuqs](https://nuqs.dev/)は、様々なReactフレームワークでURLのクエリパラメータを型安全に扱うためのライブラリです。もちろんNext.js App Routerでも使用できます。
+
+nuqsではこんなことができます。
+
+- **型安全性**: TypeScriptの型推論により、クエリパラメータの型が自動的に推論される
+- **簡潔な記法**: `useState`のような直感的なAPIでクエリパラメータを操作できる
+- **パーサーの組み込み**: 数値、真偽値、配列など、様々な型のパーサーが用意されている
+- **Next.js App Router対応**: Next.js 13以降のApp Routerに完全対応
+- **Server Components対応**: サーバーコンポーネントでもクエリパラメータを扱える
+
+
+# nuqsの使い方
+
+## 初期設定
+Next.js App Routerでnuqsを使うためには、まず`NuqsAdapter`でアプリケーション全体をラップする必要があります。
+
+```tsx title="app/layout.tsx"
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import { type ReactNode } from 'react'
+
+export default function RootLayout({
+  children
+}: {
+  children: ReactNode
+}) {
+  return (
+    <html>
+      <body>
+        <NuqsAdapter>{children}</NuqsAdapter>
+      </body>
+    </html>
+  )
+}
+```
+
+## Client Componentsでの使い方
+```tsx title="app/page.tsx"
+"use client";
+
+import { useQueryState } from "nuqs";
+
+export default function Page() {
+const [name, setName] = useQueryState('name')
+  return (
+    <>
+      <input value={name || ''} onChange={e => setName(e.target.value)} />
+      <button onClick={() => setName(null)}>Clear</button>
+      <p>Hello, {name || 'anonymous visitor'}!</p>
+    </>
+  )
+}
+```
+
+これだけで、クエリパラメータの扱いがだいぶ楽になりました。しかし、クエリパラメータで`string`以外の型を扱いたい時がありますね。例えば数値を扱いたい時はどうすればいいでしょうか？
+
+URLのクエリパラメータは基本的に`string`型です。しかし、parserと呼ばれるものを利用することで、クエリパラメータを型安全に扱うことができます。
+`number`や`boolean`のようなプリミティブな型を扱う<AnchorLink href="https://nuqs.dev/docs/parsers/built-in">ビルトインのparser</AnchorLink>から、より複雑な型を扱える<AnchorLink href="https://nuqs.dev/docs/parsers/making-your-own">独自のカスタムparser</AnchorLink>を作成することもできます。
+```tsx
+'use client';
+
+import { useQueryState, parseAsInteger } from 'nuqs'
+
+export default function Page() {
+  const [count, setCount] = useQueryState('count', parseAsInteger)
+  //     ^? number | null
+  return (
+    <>
+      <pre>count: {count}</pre>
+      <button onClick={() => setCount(0)}>Reset</button>
+      {/* handling null values in setCount is annoying: */}
+      <button onClick={() => setCount(c => (c ?? 0) + 1)}>+</button>
+      <button onClick={() => setCount(c => (c ?? 0) - 1)}>-</button>
+      <button onClick={() => setCount(null)}>Clear</button>
+    </>
+  )
+}
+```
+
+またdefault valueを設定することもできます。これは、クエリパラメータが存在しない場合に使用され、`null`ではなくdefault valueが使用されます。
+```tsx
+const [count, setCount] = useQueryState('count', parseAsInteger.withDefault(0))
+//     ^? number
+```
+
+## Server Componentsでの使い方
+Next.jsのPageコンポーネントで受け取るSearchParamsも、下記のように`loader`を作成することで型安全に取得できます。
+```tsx title="search-params.ts"
+import { parseAsString, parseAsInteger, createLoader } from 'nuqs/server'
+
+const searchParams = {
+  search: parseAsString.withDefault(''),
+  page: parseAsInteger.withDefault(0)
+}
+
+export const loadSearchParams = createLoader(searchParams)
+```
+
+
+```tsx title="app/page.tsx"
+import { loadSearchParams } from './search-params'
+import type { SearchParams } from 'nuqs/server'
+
+type PageProps = {
+  searchParams: Promise<SearchParams>
+}
+
+export default async function Page({ searchParams }: PageProps) {
+  const { search, page } = await loadSearchParams(searchParams)
+  return <SearchForm
+    search={search}
+    page={page}
+  />
+}
+```
+
+## nuqsの便利なオプション
+nuqsでは様々なオプションが用意されています。中でも私がよく使う・便利だと感じたオプションを2つ紹介します。
+<ExternalOgp url="https://nuqs.dev/docs/options" />
+
+### `shallow`
+デフォルトでは`true`です。これは、クエリパラメータが変更された時に、ページをリロードするかどうか（ネットワークリクエストを発生させるかどうか）を指定します。Next.js App Routerでクエリパラメータ変更時にRSCを更新したい時は`shallow: false`を指定します。そうすることで、クエリパラメータが変更された時にRSCを更新することができます。
+
+### `limitUrlUpdates`
+URLの更新回数を制限するオプションです。`throttle`と`debounce`の2種類があります。今回はキーワード検索などでよく利用する`debounce`の使用例を紹介します。
+```tsx
+'use client';
+
+import { useQueryState, parseAsString, debounce } from 'nuqs';
+
+function Search() {
+  const [search, setSearch] = useQueryState(
+    'q',
+    parseAsString
+      .withDefault('')
+      .withOptions({ shallow: false })
+  )
+
+  return (
+    <input
+      value={search}
+      onChange={(e) =>
+        setSearch(e.target.value, {
+          // リセット時は即時更新、それ以外は500msでdebounce
+          limitUrlUpdates: e.target.value === '' ? undefined : debounce(500)
+        })
+      }
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') {
+          // 即時更新
+          setSearch(e.target.value)
+        }
+      }}
+    />
+  )
+}
+```
+これにより、リセット時は即時更新、それ以外は500msでdebounceされるようになります。また、先ほど紹介した`shallow: false`を併用することで、クエリパラメータが変更された時にRSCを更新でき、検索結果をリアルタイムに反映することができます。
+
+
+# まとめ
+nuqsはReactアプリケーションでURLクエリパラメータを型安全に扱うためのライブラリです。基本的な使い方やよく使うオプションを紹介しましたが、他にも様々な機能が用意されています。Reactアプリケーションでクエリパラメータを型安全に扱いたい方は、ぜひ一度試してみてください。
+
+Happy coding!
+
+# 参考リンク
+<ExternalOgp url="https://nuqs.dev/" />

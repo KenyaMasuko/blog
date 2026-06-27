@@ -1,6 +1,5 @@
 import { Fragment } from "hono/jsx";
 import avatar from "../assets/avatar.avif?url";
-import { ENV } from "../constants/env";
 import { Skills } from "../constants/skill";
 import { Badge } from "./badge";
 
@@ -19,11 +18,11 @@ export const Me = () => {
 					height={100}
 				/>
 				<p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-					現在コミュニティSaaSの会社でソフトウェアエンジニアとしてプロジェクトに取り組んでいます。
+					都内のIT企業でソフトウェアエンジニアとしてプロジェクトに取り組んでいます。
 					<br />
 					特にフロントエンド開発に興味があり、ReactやTypeScriptを使った開発が得意です。
 					<br />
-					このブログでは、技術的なことや日々の学びをシェアしていきます。
+					このブログでは、技術的なことをメインに日々の学びや感想などを記録していきます。
 				</p>
 			</div>
 			<div>

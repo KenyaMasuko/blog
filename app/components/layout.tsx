@@ -1,10 +1,6 @@
 import type { Child, FC } from "hono/jsx";
-import { Fragment, useState } from "hono/jsx";
-import { CATEGORY } from "../constants/category";
 import { Header } from "../islands/header";
-import { ThemeButton } from "../islands/theme-button";
 import { getPosts } from "../lib/posts";
-import { Badge } from "./badge";
 
 type Props = {
 	children: Child;
@@ -61,7 +57,7 @@ export const Layout: FC<Props> = ({ children, showSidebar = true }) => {
 			</main>
 			<footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
 				<div className="container mx-auto px-4 py-6 text-center text-gray-600 dark:text-gray-400">
-					© 2024 KenyaMasuko All rights reserved.
+					© 2026 KenyaMasuko All rights reserved.
 				</div>
 			</footer>
 		</div>

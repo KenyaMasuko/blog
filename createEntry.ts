@@ -66,6 +66,7 @@ title: ${entryTitle}
 date: ${isoDate}
 description: 
 iconUrl: 
+published: false
 ---
 `;
 

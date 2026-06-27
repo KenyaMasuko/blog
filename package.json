@@ -6,6 +6,7 @@
 		"build": "vite build --mode client && vite build",
 		"preview": "wrangler pages dev",
 		"deploy": "$npm_execpath run build && wrangler pages deploy",
+		"create:entry": "bun createEntry.ts",
 		"lint:text": "textlint \"**/*.mdx\" -f pretty-error",
 		"format": "biome format --write",
 		"check": "biome check --write"
